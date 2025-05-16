@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box } from '@chakra-ui/react'
 import { Routes, Route } from 'react-router-dom'
 
+import Loader from './components/Loader'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -12,51 +13,53 @@ import Contact from './components/Contact'
 import ParticlesBackground from './components/ParticlesBackground'
 import ScrollToTopButton from './components/ScrollToTopButton'
 import MesProjets from './pages/MesProjets'
-
 import CustomCursor from './components/CustomCursor'
 
 const App = () => {
+  const [loadingFinished, setLoadingFinished] = useState(false)
+
   return (
     <Box position="relative" overflow="hidden">
-     
-      <CustomCursor />
+      {!loadingFinished && <Loader onFinish={() => setLoadingFinished(true)} />}
 
-     
-      <div
-        id="particles-js"
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: 1,
-          pointerEvents: 'auto'
-        }}
-      />
-      <ParticlesBackground />
-
-     
-      <Box position="relative" zIndex={2}>
-        <Header />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Hero />
-                <About />
-                <Skills />
-                <Projects />
-                <Formation />
-                <Contact />
-                <ScrollToTopButton />
-              </>
-            }
+      {loadingFinished && (
+        <>
+          <CustomCursor />
+          <div
+            id="particles-js"
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 1,
+              pointerEvents: 'auto'
+            }}
           />
-          <Route path="/mes-projets" element={<MesProjets />} />
-        </Routes>
-      </Box>
+          <ParticlesBackground />
+          <Box position="relative" zIndex={2}>
+            <Header />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Hero />
+                    <About />
+                    <Skills />
+                    <Projects />
+                    <Formation />
+                    <Contact />
+                    <ScrollToTopButton />
+                  </>
+                }
+              />
+              <Route path="/mes-projets" element={<MesProjets />} />
+            </Routes>
+          </Box>
+        </>
+      )}
     </Box>
   )
 }
